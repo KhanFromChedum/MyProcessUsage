@@ -11,16 +11,19 @@
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30px"/>
-            <RowDefinition/>
+            <RowDefinition Height="30px" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBox Text="{Binding m_strSearch}" Grid.Row="0"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Command="{Binding m_cmdConfig}">Configuration</Button>
+            <TextBox Text="{Binding m_strSearch}" Width="300px" />
+        </StackPanel>
         <DataGrid ItemsSource="{Binding m_ProcessesStats}" AutoGenerateColumns="False" Grid.Row="1">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="Survey" Binding="{Binding m_bSave, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>
                 <DataGridTextColumn Header="Process name" Binding="{Binding m_strName}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Memory (bytes)" Binding="{Binding m_uiMemoryUsage}"></DataGridTextColumn>
-                <DataGridTextColumn Header="CPU (%)" Binding="{Binding m_fCPUUsage}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Processor Time (%)" Binding="{Binding m_fCPUUsage}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

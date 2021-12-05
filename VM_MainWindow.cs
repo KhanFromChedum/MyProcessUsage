@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace MyProcessUsage
 {
@@ -13,14 +14,31 @@ namespace MyProcessUsage
 
         public string m_strSearch
         {
-            get 
-            { 
-                return _mainWindow.m_strSearch; 
+            get
+            {
+                return _mainWindow.m_strSearch;
             }
             set
             {
                 _mainWindow.m_strSearch = value;
                 NotifyPropertyChanged(nameof(m_strSearch));
+            }
+        }
+
+        private ICommand _cmdConfig;
+        public ICommand m_cmdConfig
+        {
+            get
+            {
+                if (_cmdConfig == null)
+                {
+                    _cmdConfig = new RelayCommand((o) =>
+                    {
+                        Configuration configurationWindow = new Configuration();
+                        configurationWindow.ShowDialog();
+                    });
+                }
+                return _cmdConfig;
             }
         }
 

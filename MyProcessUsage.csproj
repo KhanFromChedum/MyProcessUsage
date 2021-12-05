@@ -55,11 +55,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration.xaml.cs">
+      <DependentUpon>Configuration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IClosable.cs" />
+    <Compile Include="M_Configuration.cs" />
     <Compile Include="M_MainWindow.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="ProcessExtension.cs" />
     <Compile Include="ProcessStats.cs" />
+    <Compile Include="RelayCommand.cs" />
+    <Compile Include="VM_Configuration.cs" />
     <Compile Include="VM_MainWindow.cs" />
+    <Page Include="Configuration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

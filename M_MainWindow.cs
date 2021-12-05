@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Linq;
-using System;
 
 namespace MyProcessUsage
 {
@@ -13,7 +11,7 @@ namespace MyProcessUsage
         public M_MainWindow()
         {
             aTimer.Elapsed += new ElapsedEventHandler(ATimer_Elapsed);
-            aTimer.AutoReset = true;
+            aTimer.AutoReset = false;
             aTimer.Interval = 1000;
             aTimer.Enabled = true;
         }
@@ -46,41 +44,36 @@ namespace MyProcessUsage
             }
             if (m_ProcessesStats != null)
             {
-                List<string> instances =  new List<string>(await App.GetAllInstances());
-                if(!string.IsNullOrEmpty(m_strSearch))
+                List<string> instances = new List<string>(await App.GetAllInstances());
+                if (!string.IsNullOrEmpty(m_strSearch))
                 {
                     instances = new List<string>(instances.Where(x => x.ToLower().Contains(m_strSearch.ToLower())));
                 }
 
-                var deletedProcesses = new List<ProcessStats>(m_ProcessesStats.Where(process => !instances.Any(x=>x==process.m_strName)));
-                var AddedProcess = new List<string>(instances.Where(process => !m_ProcessesStats.Any(x => x.m_strName==process)));
+                var deletedProcesses = new List<ProcessStats>(m_ProcessesStats.Where(process => !instances.Any(x => x == process.m_strName)));
+                var AddedProcess = new List<string>(instances.Where(process => !m_ProcessesStats.Any(x => x.m_strName == process)));
 
                 App.Current?.Dispatcher.Invoke(() =>
+               {
+                   foreach (var item in deletedProcesses)
+                   {
+                       m_ProcessesStats.Remove(item);
+                   }
+
+                   foreach (var item in AddedProcess)
+                   {
+                       m_ProcessesStats.Add(App.ProcessConverter(item));
+                   }
+               });
+
+                Parallel.ForEach(m_ProcessesStats, (processStats) =>
                 {
-
-                    foreach (var item in deletedProcesses)
-                    {
-                        m_ProcessesStats.Remove(item);
-                    }
-
-                    foreach (var item in AddedProcess)
-                    {
-                        m_ProcessesStats.Add(App.ProcessConverter(item));
-                    }
-                    
+                    processStats.NextValue();
+                    App.Save(processStats);
                 });
-                try
-                {
-                    Parallel.ForEach(m_ProcessesStats, (processStats) => { processStats.NextValue(); });
-                }
-                catch(IndexOutOfRangeException)
-                {
-                    //Could happen when the foreach execute in the same time of the foreach.parallel
-                }
 
-
+                aTimer.Enabled = true;
             }
-       
         }
 
         private static System.Timers.Timer aTimer = new System.Timers.Timer();

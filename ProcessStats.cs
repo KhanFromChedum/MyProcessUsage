@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace MyProcessUsage
 {
@@ -28,9 +27,8 @@ namespace MyProcessUsage
                     //deal with exception
                 }
             }
-
         }
-    
+
         private bool _bSave;
 
         public bool m_bSave
@@ -90,5 +88,7 @@ namespace MyProcessUsage
                 NotifyPropertyChanged(nameof(m_fCPUUsage));
             }
         }
+
+        public long m_lLastSaved { get; set; }
     }
 }
