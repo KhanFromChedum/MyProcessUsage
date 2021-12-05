@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Linq;
+using System;
 
 namespace MyProcessUsage
 {
@@ -51,22 +52,31 @@ namespace MyProcessUsage
                     instances = new List<string>(instances.Where(x => x.ToLower().Contains(m_strSearch.ToLower())));
                 }
 
-                //var deletedProcesses =new List<ProcessStats>( m_ProcessesStats.Where(process => !instances.Any( )));
-                //var AddedProcess = new List<string>(instances.Where(process => !m_ProcessesStats.Any(  )));
-                //App.Current?.Dispatcher.Invoke( () => {
+                var deletedProcesses = new List<ProcessStats>(m_ProcessesStats.Where(process => !instances.Any(x=>x==process.m_strName)));
+                var AddedProcess = new List<string>(instances.Where(process => !m_ProcessesStats.Any(x => x.m_strName==process)));
 
-                //    foreach(var item in deletedProcesses)
-                //    {
-                //        m_ProcessesStats.Remove(item);
-                //    }
+                App.Current?.Dispatcher.Invoke(() =>
+                {
 
-                //    foreach (var item in AddedProcess)
-                //    {
-                //        m_ProcessesStats.Add(App.ProcessConverter(item));
-                //    }
-                //});
-                Parallel.ForEach(m_ProcessesStats, (processStats) => {  processStats.NextValue(); });
+                    foreach (var item in deletedProcesses)
+                    {
+                        m_ProcessesStats.Remove(item);
+                    }
 
+                    foreach (var item in AddedProcess)
+                    {
+                        m_ProcessesStats.Add(App.ProcessConverter(item));
+                    }
+                    
+                });
+                try
+                {
+                    Parallel.ForEach(m_ProcessesStats, (processStats) => { processStats.NextValue(); });
+                }
+                catch(IndexOutOfRangeException)
+                {
+                    //Could happen when the foreach execute in the same time of the foreach.parallel
+                }
 
 
             }

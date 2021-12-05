@@ -23,7 +23,7 @@ namespace MyProcessUsage
                     m_fCPUUsage = _perfCpu.NextValue();
                     m_uiMemoryUsage = (uint)_perfMemory.NextValue();
                 }
-                catch (InvalidOperationException error)
+                catch (InvalidOperationException)
                 {
                     //deal with exception
                 }
@@ -31,12 +31,6 @@ namespace MyProcessUsage
 
         }
     
-
-
-
-
-        public Process m_Process { get; set; }
-
         private bool _bSave;
 
         public bool m_bSave
