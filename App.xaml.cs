@@ -38,15 +38,17 @@ namespace MyProcessUsage
                 if (lTime > (M_Configuration.m_uiSaveIntervall*1000))
                 {
                     processStats.m_lLastSaved = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    if (!File.Exists("c:\\temp\\" + processStats.m_strName.Replace("#", "_") + ".csv"))
+                    string strSavePath = Path.Combine(M_Configuration.m_strSavePath, processStats.m_strName.Replace("#", "_") + ".csv");
+                    if (!File.Exists(strSavePath))
                     {
-                        StreamWriter sw = File.CreateText("c:\\temp\\" + processStats.m_strName.Replace("#", "_") + ".csv");
+                        
+                        StreamWriter sw = File.CreateText(strSavePath);
                         sw.WriteLine("Date;Memory;CPU");
                         sw.Close();
                     }
                     else
                     {
-                        File.AppendAllText("c:\\temp\\" + processStats.m_strName.Replace("#", "_") + ".csv", DateTime.Now.ToString() + ";" + processStats.m_uiMemoryUsage.ToString() + ";" + processStats.m_fCPUUsage.ToString() + Environment.NewLine);
+                        File.AppendAllText(strSavePath, DateTime.Now.ToString() + ";" + processStats.m_uiMemoryUsage.ToString() + ";" + processStats.m_fCPUUsage.ToString() + Environment.NewLine);
                     }
                 }
             }

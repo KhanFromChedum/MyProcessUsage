@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyProcessUsage"
         mc:Ignorable="d"
-        Title="Configuration" Height="125" Width="255"
+        Title="Configuration" Height="140" Width="255"
         x:Name="ConfigWindow">
     <Window.DataContext>
         <local:VM_Configuration />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20px"/>
-            <RowDefinition Height="20px"/>
+            <RowDefinition Height="30px"/>
+            <RowDefinition Height="30px"/>
             <RowDefinition Height="50px"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
