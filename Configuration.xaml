@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyProcessUsage"
         mc:Ignorable="d"
-        Title="Configuration" Height="105" Width="255"
+        Title="Configuration" Height="125" Width="255"
         x:Name="ConfigWindow">
     <Window.DataContext>
         <local:VM_Configuration />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20px"/>
             <RowDefinition Height="20px"/>
             <RowDefinition Height="50px"/>
         </Grid.RowDefinitions>
@@ -20,6 +21,11 @@
             <TextBox Text="{Binding m_uiSaveIntervall}" Width="150px"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBlock Text="Save path : " />
+            <TextBox Text="{Binding m_strSavePath}" Width="150px"/>
+            <Button Width="20" Command="{Binding m_cmdFolderSelection}">...</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button CommandParameter="{Binding ElementName=ConfigWindow}" Command="{Binding m_cmdCancel}" Margin="5px">Cancel</Button>
             <Button CommandParameter="{Binding ElementName=ConfigWindow}" Command="{Binding m_cmdOk}" Margin="5px">Ok</Button>
         </StackPanel>
